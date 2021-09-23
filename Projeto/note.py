@@ -7,7 +7,7 @@ class Note:
         pass
 
     def fromTuple(self,data:tuple) -> None:
-        self.__id = int(data[0])
+        self.id = int(data[0])
         self.name = data[1]
         self.text = data[2]
 
