@@ -16,10 +16,24 @@ class Database:
         self.__cursor.execute(notesTable)
         self.__connection.commit()
 
-    def saveNote(self,note: Note):
+    def saveNote(self,note: Note) -> None:
         insert = f"INSERT INTO notes (note_name,note_text) VALUES ('{Note.name}','{note.text}');"
         self.__cursor.execute(insert);
         self.__connection.commit();
+
+    def querryAll(self) -> list:
+        querry = "SELECT * FROM notes;"
+
+        self.__cursor.execute(querry)
+        data = self.__cursor.fetchall()
+
+        Notes = list()
+
+        for temp in data:
+            tempNote = Note()
+            tempNote.fromTuple(temp)
+            Notes.append(tempNote)
+        return Notes
 
 
     

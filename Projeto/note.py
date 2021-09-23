@@ -1,9 +1,5 @@
-from _typeshed import Self
-from typing import Text
-
-
 class Note:
-    id = int()
+    __id = int()
     name = str()
     text = str()
 
@@ -11,7 +7,7 @@ class Note:
         pass
 
     def fromTuple(self,data:tuple) -> None:
-        self.id = int(data[0])
+        self.__id = int(data[0])
         self.name = data[1]
         self.text = data[2]
 
