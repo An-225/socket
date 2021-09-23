@@ -17,7 +17,7 @@ class Server:
         self.port = port
         self.path = path
 
-    def open(self):
+    def open(self) -> None:
         self.data = Database(self.path)
 
         self.server = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
@@ -25,7 +25,7 @@ class Server:
         self.server.listen(1)
         self.connection, clientIP = self.server.accept()
 
-    def receive(self):
+    def receive(self) -> None:
         self.bufferIN = ((self.connection.recv(3)).decode("UTF-8")).upper()
 
         if "NEW" in self.bufferIN:
@@ -35,10 +35,19 @@ class Server:
         if "DEL" in self.bufferIN:
             pass
 
-    def newNote(self):
+    def send(self) -> None:
+        self.connection.send(self.bufferOUT.encode("UTF-8"))
+
+    def newNote(self) -> None:
         temp = Note()
         
         temp.name = self.connection.recv(128).decode("UTF-8")
         temp.text = self.connection.recv(1024).decode("UTF-8")
 
         self.data.saveNote(temp)
+
+    def allNotes(self) -> None:
+        notes = self.data.querryAll()
+        
+        self.bufferOUT = str(notes).encode("UTF-8")
+        self.send()
