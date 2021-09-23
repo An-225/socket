@@ -17,6 +17,7 @@ class Server:
         self.port = port
         self.path = path
 
+
     def open(self) -> None:
         self.data = Database(self.path)
 
@@ -24,6 +25,10 @@ class Server:
         self.server.bind((self.ip, self.port))
         self.server.listen(1)
         self.connection, clientIP = self.server.accept()
+
+    def close(self) -> None:
+        self.server.close()
+        del self.data
 
     def receive(self) -> None:
         self.bufferIN = ((self.connection.recv(3)).decode("UTF-8")).upper()
@@ -49,7 +54,7 @@ class Server:
     def allNotes(self) -> None:
         notes = self.data.querryAll()
 
-        self.bufferOUT = str(notes).encode("UTF-8")
+        self.bufferOUT = str(notes)
         self.send()
 
     def delNote(self) -> None:

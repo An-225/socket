@@ -15,6 +15,10 @@ class Database:
 
         self.__cursor.execute(notesTable)
         self.__connection.commit()
+    
+    def __del__(self) -> None:
+        self.__cursor.close()
+        self.__connection.close()
 
     def saveNote(self, note: Note) -> None:
         insert = f"INSERT INTO notes (note_name,note_text) VALUES ('{note.name}','{note.text}');"
