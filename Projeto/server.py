@@ -31,9 +31,9 @@ class Server:
         if "NEW" in self.bufferIN:
             self.newNote()
         if "ALL" in self.bufferIN:
-            pass
+            self.allNotes()
         if "DEL" in self.bufferIN:
-            pass
+            self.delNote()
 
     def send(self) -> None:
         self.connection.send(self.bufferOUT.encode("UTF-8"))
@@ -48,6 +48,13 @@ class Server:
 
     def allNotes(self) -> None:
         notes = self.data.querryAll()
-        
+
         self.bufferOUT = str(notes).encode("UTF-8")
         self.send()
+
+    def delNote(self) -> None:
+        temp = Note()
+
+        temp.id = int(self.connection.recv(8).decode("UTF-8"))
+
+        self.data.deleteNote(temp)
