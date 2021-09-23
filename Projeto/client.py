@@ -21,3 +21,13 @@ class Client:
 
     def send(self) -> None:
         self.connection.send(self.bufferOUT.encode("UTF-8"))
+
+    def newNote(self) -> None:
+        self.bufferOUT = "NEW"
+        self.send()
+
+    def allNotes(self) -> None:
+        pass
+
+    def delNote(self) -> None:
+        pass        
