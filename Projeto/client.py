@@ -25,9 +25,15 @@ class Client:
     def newNote(self) -> None:
         self.bufferOUT = "NEW"
         self.send()
+        self.bufferOUT = input("Enter the name: ")
+        self.send()
+        self.bufferOUT = input("Enter the text: ")
+        self.send()
+
 
     def allNotes(self) -> None:
-        pass
+        self.receive(1024)
+        print(self.bufferOUT)
 
     def delNote(self) -> None:
         pass        
