@@ -1,5 +1,5 @@
 class Note:
-    __id = int()
+    id = int()
     name = str()
     text = str()
 

@@ -3,7 +3,7 @@ from note import Note
 
 
 class Database:
-    def __init__(self,path) -> None:
+    def __init__(self, path) -> None:
         self.__connection = sqlite3.connect(path)
         self.__cursor = self.__connection.cursor()
 
@@ -12,14 +12,15 @@ class Database:
                         note_name TEXT NOT NULL,
                         note_text TEXT NOT NULL
                     );"""
-        
+
         self.__cursor.execute(notesTable)
         self.__connection.commit()
 
-    def saveNote(self,note: Note) -> None:
-        insert = f"INSERT INTO notes (note_name,note_text) VALUES ('{Note.name}','{note.text}');"
-        self.__cursor.execute(insert);
-        self.__connection.commit();
+    def saveNote(self, note: Note) -> None:
+        insert = f"INSERT INTO notes (note_name,note_text) VALUES ('{note.name}','{note.text}');"
+
+        self.__cursor.execute(insert)
+        self.__connection.commit()
 
     def querryAll(self) -> list:
         querry = "SELECT * FROM notes;"
@@ -33,7 +34,11 @@ class Database:
             tempNote = Note()
             tempNote.fromTuple(temp)
             Notes.append(tempNote)
+        
         return Notes
 
-
-    
+    def deleteNote(self, note: Note) -> None:
+        delete = f"DELETE FROM notes WHERE note_id IS {note.id};"
+        
+        self.__cursor.execute(delete)
+        self.__connection.commit()
