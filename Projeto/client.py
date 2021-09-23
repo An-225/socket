@@ -36,4 +36,5 @@ class Client:
         print(self.bufferOUT)
 
     def delNote(self) -> None:
-        pass        
+        self.bufferOUT = input("Enter the id: ")
+        self.send()
