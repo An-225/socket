@@ -2,8 +2,8 @@
 
 ## Cliente
 
-O cliente será responsável por mandar e receber os dados
+O cliente é executado utilizando o arquivo [main_client.py](main_client.py)
 
 ## Servidor
 
-O servidor será responsável por armazenar os dados utilizando o SQLite
+O servidor é executado utilizando o arquivo [main_server.py](main_server.py)
