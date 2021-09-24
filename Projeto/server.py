@@ -58,13 +58,30 @@ class Server:
 
     def allNotes(self) -> None:
         notes = self.data.querryAll()
-
-        self.bufferOUT = str(notes)
+        
+        self.bufferOUT = str(len(notes))
+        print(self.bufferOUT)
         self.send()
+
+        self.receive(3)
+
+        for note in notes:
+            strNote = str(note.toTuple())
+            self.bufferOUT = str(len(strNote))
+            print(self.bufferOUT)
+            self.send()
+
+            self.receive(3)
+
+            self.bufferOUT = strNote
+            self.send()
+
+            self.receive(3)
+
 
     def delNote(self) -> None:
         temp = Note()
-        
+
         self.receive(8)
         temp.id = int(self.bufferIN)
 

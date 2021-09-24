@@ -1,3 +1,4 @@
+from note import Note
 import socket
 
 class Client:
@@ -22,6 +23,7 @@ class Client:
     def send(self) -> None:
         self.connection.send(self.bufferOUT.encode("UTF-8"))
 
+    
     def newNote(self) -> None:
         self.bufferOUT = "NEW"
         self.send()
@@ -34,8 +36,38 @@ class Client:
     def allNotes(self) -> None:
         self.bufferOUT = "ALL"
         self.send()
-        self.receive(1024)
-        print(self.bufferIN)
+
+        self.receive(8)
+
+        self.bufferOUT = "SYN"
+        self.send()
+        
+        size = int(self.bufferIN)
+        print("size>",self.bufferIN)
+
+        for i in range(size):
+            self.receive(8)
+
+            self.bufferOUT = "SYN"
+            self.send()
+
+            
+            noteSize = int(self.bufferIN)
+            print("NS>",noteSize)
+
+            self.receive(noteSize)
+
+            print("NT>",self.bufferIN)
+
+            self.bufferOUT = "SYN"
+            self.send()
+
+            #self.bufferIN.lstrip('()')
+            #print("T>",self.bufferIN.lstrip('(',')',' '))
+
+            tempNote = Note()
+            tempNote.fromTuple(eval(self.bufferIN[1:noteSize-1]))
+            tempNote.print()
 
     def delNote(self) -> None:
         self.bufferOUT = "DEL"
