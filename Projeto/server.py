@@ -31,7 +31,7 @@ class Server:
         del self.data
 
     def receive(self,size) -> None:
-        self.bufferIN = ((self.connection.recv(size)).decode("UTF-8")).upper()
+        self.bufferIN = (self.connection.recv(size)).decode("UTF-8")
 
     def send(self) -> None:
         self.connection.send(self.bufferOUT.encode("UTF-8"))
@@ -49,8 +49,10 @@ class Server:
     def newNote(self) -> None:
         temp = Note()
         
-        temp.name = self.connection.recv(128).decode("UTF-8")
-        temp.text = self.connection.recv(1024).decode("UTF-8")
+        self.receive(128)
+        temp.name = self.bufferIN
+        self.receive(1024)
+        temp.text = self.bufferIN
 
         self.data.saveNote(temp)
 
@@ -62,7 +64,8 @@ class Server:
 
     def delNote(self) -> None:
         temp = Note()
-
-        temp.id = int(self.connection.recv(8).decode("UTF-8"))
+        
+        self.receive(8)
+        temp.id = int(self.bufferIN)
 
         self.data.deleteNote(temp)
