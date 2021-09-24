@@ -21,10 +21,16 @@ class Server:
     def open(self) -> None:
         self.data = Database(self.path)
 
+        print("Starting server...",end='')
         self.server = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         self.server.bind((self.ip, self.port))
         self.server.listen(1)
-        self.connection, clientIP = self.server.accept()
+        print("OK!")
+        print(f"Server online in {self.ip}:{self.port}")
+
+        print("Waiting a client...")
+        self.connection, self.clientIP = self.server.accept()
+        print(f"Client {self.clientIP[0]}:{self.clientIP[1]} connected!")
 
     def close(self) -> None:
         self.bufferOUT = "BYE"
@@ -33,13 +39,15 @@ class Server:
         self.server.close()
         del self.data
 
+
     def receive(self,size) -> None:
         self.bufferIN = (self.connection.recv(size)).decode("UTF-8")
         if "BYE" in self.bufferIN:
-            print("Client disconnected!!")
-            print("Waiting new connection...",end='')
-            self.connection, clientIP = self.server.accept()
-            print("OK!")
+            print("ERROR!")
+            print("Client disconnected!!!")
+            print("Waiting a new client...")
+            self.connection, self.clientIP = self.server.accept()
+            print(f"New client {self.clientIP[0]}:{self.clientIP[1]} connected!")
 
 
     def send(self) -> None:
@@ -56,7 +64,7 @@ class Server:
 
     def run(self) -> None:
         self.receive(3)
-        
+
         if "NEW" in self.bufferIN:
             self.newNote()
         if "ALL" in self.bufferIN:

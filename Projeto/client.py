@@ -1,4 +1,3 @@
-import socket
 from time import sleep
 from note import Note
 
@@ -20,7 +19,7 @@ class Client:
     def disconnect(self) -> None:
         self.bufferOUT = "BYE"
         self.send()
-        
+
         self.connection.close()
 
     def receive(self,size) -> None:
@@ -28,7 +27,6 @@ class Client:
         if "BYE" in self.bufferIN:
             self.disconnect()
             print("Server closed!!!")
-            sleep(5)
             exit(1)
 
     def send(self) -> None:
