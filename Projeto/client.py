@@ -1,4 +1,4 @@
-from time import sleep
+import socket
 from note import Note
 
 class Client:
