@@ -1,6 +1,6 @@
 from client import Client
 
-temp = Client("192.168.0.105",41990,"data-test.db")
+temp = Client("192.168.0.105",41990)
 
 temp.connect()
 
@@ -9,6 +9,7 @@ while True:
     print("1 - Create a note")
     print("2 - View notes")
     print("3 - Delete a note")
+    print("4 - Quit")
 
     c = input("--> Choose an option: ")
 
@@ -18,3 +19,6 @@ while True:
         temp.allNotes()
     if c == '3':
         temp.delNote()
+    if c == '4':
+        temp.disconnect()
+        exit(0)

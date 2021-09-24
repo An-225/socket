@@ -22,7 +22,7 @@ class Database:
         print("OK")
     
     def __del__(self) -> None:
-        print(f"Closing connection...",end='')
+        print(f"Closing connections...",end='')
         self.__cursor.close()
         self.__connection.close()
         print(f"OK!")

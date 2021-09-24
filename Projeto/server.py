@@ -27,14 +27,32 @@ class Server:
         self.connection, clientIP = self.server.accept()
 
     def close(self) -> None:
+        self.bufferOUT = "BYE"
+        self.send()
+
         self.server.close()
         del self.data
 
     def receive(self,size) -> None:
         self.bufferIN = (self.connection.recv(size)).decode("UTF-8")
+        if "BYE" in self.bufferIN:
+            print("Client disconnected!!")
+            print("Waiting new connection...",end='')
+            self.connection, clientIP = self.server.accept()
+            print("OK!")
+
 
     def send(self) -> None:
         self.connection.send(self.bufferOUT.encode("UTF-8"))
+
+    def recvGO(self) -> None:
+        self.receive(3)
+        if not("GO!" in self.bufferIN):
+            self.wait()
+    
+    def sendGO(self) -> None:
+        self.bufferOUT = "GO!"
+        self.send()
 
     def run(self) -> None:
         self.receive(3)
@@ -63,20 +81,20 @@ class Server:
         print(self.bufferOUT)
         self.send()
 
-        self.receive(3)
+        self.recvGO()
 
         for note in notes:
             strNote = str(note.toTuple())
             self.bufferOUT = str(len(strNote))
             print(self.bufferOUT)
             self.send()
-
-            self.receive(3)
+            
+            self.recvGO()
 
             self.bufferOUT = strNote
             self.send()
 
-            self.receive(3)
+            self.recvGO()
 
 
     def delNote(self) -> None:

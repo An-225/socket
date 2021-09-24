@@ -1,5 +1,6 @@
-from note import Note
 import socket
+from time import sleep
+from note import Note
 
 class Client:
     ip = str()
@@ -8,21 +9,39 @@ class Client:
     bufferIN = str()
     bufferOUT = str()
 
-    def __init__(self, ip: str, port: int, path: str) -> None:
+    def __init__(self, ip: str, port: int) -> None:
         self.ip = ip
         self.port = port
-        self.path = path
 
     def connect(self) -> None:
         self.connection = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         self.connection.connect((self.ip,self.port))
 
+    def disconnect(self) -> None:
+        self.bufferOUT = "BYE"
+        self.send()
+        
+        self.connection.close()
+
     def receive(self,size) -> None:
         self.bufferIN = (self.connection.recvfrom(size))[0].decode("UTF-8")
+        if "BYE" in self.bufferIN:
+            self.disconnect()
+            print("Server closed!!!")
+            sleep(5)
+            exit(1)
 
     def send(self) -> None:
         self.connection.send(self.bufferOUT.encode("UTF-8"))
 
+    def recvGO(self) -> None:
+        self.receive(3)
+        if not("GO!" in self.bufferIN):
+            self.wait()
+    
+    def sendGO(self) -> None:
+        self.bufferOUT = "GO!"
+        self.send()
     
     def newNote(self) -> None:
         self.bufferOUT = "NEW"
@@ -39,23 +58,20 @@ class Client:
 
         self.receive(8)
 
-        self.bufferOUT = "SYN"
-        self.send()
+        self.sendGO()
         
         size = int(self.bufferIN)
 
         for i in range(size):
             self.receive(8)
 
-            self.bufferOUT = "SYN"
-            self.send()
+            self.sendGO()
             
             noteSize = int(self.bufferIN)
 
             self.receive(noteSize)
 
-            self.bufferOUT = "SYN"
-            self.send()
+            self.sendGO()
 
             tempNote = Note()
             tempNote.fromTuple(eval(self.bufferIN[1:noteSize-1]))
