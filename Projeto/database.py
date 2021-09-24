@@ -22,8 +22,10 @@ class Database:
         print("OK")
     
     def __del__(self) -> None:
+        print(f"Closing connection...",end='')
         self.__cursor.close()
         self.__connection.close()
+        print(f"OK!")
 
     def saveNote(self, note: Note) -> None:
         insert = f"INSERT INTO notes (note_name,note_text) VALUES ('{note.name}','{note.text}');"
