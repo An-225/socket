@@ -43,27 +43,19 @@ class Client:
         self.send()
         
         size = int(self.bufferIN)
-        print("size>",self.bufferIN)
 
         for i in range(size):
             self.receive(8)
 
             self.bufferOUT = "SYN"
             self.send()
-
             
             noteSize = int(self.bufferIN)
-            print("NS>",noteSize)
 
             self.receive(noteSize)
 
-            print("NT>",self.bufferIN)
-
             self.bufferOUT = "SYN"
             self.send()
-
-            #self.bufferIN.lstrip('()')
-            #print("T>",self.bufferIN.lstrip('(',')',' '))
 
             tempNote = Note()
             tempNote.fromTuple(eval(self.bufferIN[1:noteSize-1]))

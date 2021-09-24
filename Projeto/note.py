@@ -16,4 +16,6 @@ class Note:
         return temp
     
     def print(self) -> None:
+        print("-"*20)
         print(f"ID: {self.id} | Name: {self.name}\nText: {self.text}")
+        print("-"*20)
