@@ -33,6 +33,7 @@ class Client:
 
     def allNotes(self) -> None:
         self.bufferOUT = "All"
+        self.send()
         self.receive(1024)
         print(self.bufferOUT)
 
