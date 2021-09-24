@@ -32,11 +32,13 @@ class Client:
 
 
     def allNotes(self) -> None:
-        self.bufferOUT = "All"
+        self.bufferOUT = "ALL"
         self.send()
         self.receive(1024)
-        print(self.bufferOUT)
+        print(self.bufferIN)
 
     def delNote(self) -> None:
+        self.bufferOUT = "DEL"
+        self.send()
         self.bufferOUT = input("Enter the id: ")
         self.send()
