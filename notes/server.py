@@ -44,8 +44,7 @@ class Server:
             print("Client disconnected!!!")
             print("Waiting a new client...")
             self.connection, self.clientIP = self.server.accept()
-            print(
-                f"New client {self.clientIP[0]}:{self.clientIP[1]} connected!")
+            print(f"New client {self.clientIP[0]}:{self.clientIP[1]} connected!")
 
     def send(self) -> None:
         self.connection.send(self.bufferOUT.encode("UTF-8"))

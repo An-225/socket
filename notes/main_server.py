@@ -9,3 +9,4 @@ while True:
         temp.run()
     except:
         temp.close()
+        exit(1)
