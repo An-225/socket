@@ -1,6 +1,6 @@
 from client import Client
 
-temp = Client("192.168.0.105",41990)
+temp = Client("192.168.122.89",41990)
 
 temp.connect()
 

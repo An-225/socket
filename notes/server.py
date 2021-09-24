@@ -43,7 +43,6 @@ class Server:
     def receive(self,size) -> None:
         self.bufferIN = (self.connection.recv(size)).decode("UTF-8")
         if "BYE" in self.bufferIN:
-            print("ERROR!")
             print("Client disconnected!!!")
             print("Waiting a new client...")
             self.connection, self.clientIP = self.server.accept()
@@ -86,7 +85,6 @@ class Server:
         notes = self.data.querryAll()
         
         self.bufferOUT = str(len(notes))
-        print(self.bufferOUT)
         self.send()
 
         self.recvGO()
@@ -94,7 +92,6 @@ class Server:
         for note in notes:
             strNote = str(note.toTuple())
             self.bufferOUT = str(len(strNote))
-            print(self.bufferOUT)
             self.send()
             
             self.recvGO()

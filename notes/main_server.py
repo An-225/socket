@@ -1,6 +1,6 @@
 from server import Server
 
-temp = Server("192.168.0.105",41990,"data-test.db")
+temp = Server("192.168.122.89",41990,"data-test.db")
 
 temp.open()
 
