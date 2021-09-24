@@ -1,11 +1,11 @@
 from client import Client
 
-temp = Client("192.168.122.89",41990)
+temp = Client("192.168.122.89", 41990)
 
 temp.connect()
 
 while True:
-    print("*"*10,"Notes","*"*10)
+    print("*"*10, "Notes", "*"*10)
     print("1 - Create a note")
     print("2 - View notes")
     print("3 - Delete a note")

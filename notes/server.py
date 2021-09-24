@@ -17,11 +17,10 @@ class Server:
         self.port = port
         self.path = path
 
-
     def open(self) -> None:
         self.data = Database(self.path)
 
-        print("Starting server...",end='')
+        print("Starting server...", end='')
         self.server = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         self.server.bind((self.ip, self.port))
         self.server.listen(1)
@@ -39,15 +38,14 @@ class Server:
         self.server.close()
         del self.data
 
-
-    def receive(self,size) -> None:
+    def receive(self, size) -> None:
         self.bufferIN = (self.connection.recv(size)).decode("UTF-8")
         if "BYE" in self.bufferIN:
             print("Client disconnected!!!")
             print("Waiting a new client...")
             self.connection, self.clientIP = self.server.accept()
-            print(f"New client {self.clientIP[0]}:{self.clientIP[1]} connected!")
-
+            print(
+                f"New client {self.clientIP[0]}:{self.clientIP[1]} connected!")
 
     def send(self) -> None:
         self.connection.send(self.bufferOUT.encode("UTF-8"))
@@ -56,7 +54,7 @@ class Server:
         self.receive(3)
         if not("GO!" in self.bufferIN):
             self.wait()
-    
+
     def sendGO(self) -> None:
         self.bufferOUT = "GO!"
         self.send()
@@ -70,10 +68,10 @@ class Server:
             self.allNotes()
         if "DEL" in self.bufferIN:
             self.delNote()
-    
+
     def newNote(self) -> None:
         temp = Note()
-        
+
         self.receive(128)
         temp.name = self.bufferIN
         self.receive(1024)
@@ -83,7 +81,7 @@ class Server:
 
     def allNotes(self) -> None:
         notes = self.data.querryAll()
-        
+
         self.bufferOUT = str(len(notes))
         self.send()
 
@@ -93,14 +91,13 @@ class Server:
             strNote = str(note.toTuple())
             self.bufferOUT = str(len(strNote))
             self.send()
-            
+
             self.recvGO()
 
             self.bufferOUT = strNote
             self.send()
 
             self.recvGO()
-
 
     def delNote(self) -> None:
         temp = Note()

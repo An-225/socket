@@ -1,6 +1,7 @@
 import socket
 from note import Note
 
+
 class Client:
     ip = str()
     port = int()
@@ -14,7 +15,7 @@ class Client:
 
     def connect(self) -> None:
         self.connection = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-        self.connection.connect((self.ip,self.port))
+        self.connection.connect((self.ip, self.port))
 
     def disconnect(self) -> None:
         self.bufferOUT = "BYE"
@@ -22,7 +23,7 @@ class Client:
 
         self.connection.close()
 
-    def receive(self,size) -> None:
+    def receive(self, size) -> None:
         self.bufferIN = (self.connection.recvfrom(size))[0].decode("UTF-8")
         if "BYE" in self.bufferIN:
             self.disconnect()
@@ -36,11 +37,11 @@ class Client:
         self.receive(3)
         if not("GO!" in self.bufferIN):
             self.wait()
-    
+
     def sendGO(self) -> None:
         self.bufferOUT = "GO!"
         self.send()
-    
+
     def newNote(self) -> None:
         self.bufferOUT = "NEW"
         self.send()
@@ -49,7 +50,6 @@ class Client:
         self.bufferOUT = input("Enter the text: ")
         self.send()
 
-
     def allNotes(self) -> None:
         self.bufferOUT = "ALL"
         self.send()
@@ -57,14 +57,14 @@ class Client:
         self.receive(8)
 
         self.sendGO()
-        
+
         size = int(self.bufferIN)
 
         for i in range(size):
             self.receive(8)
 
             self.sendGO()
-            
+
             noteSize = int(self.bufferIN)
 
             self.receive(noteSize)
